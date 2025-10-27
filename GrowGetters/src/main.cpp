@@ -1,9 +1,4 @@
-/**
- * Blink
- *
- * Turns on an LED on for one second,
- * then off for one second, repeatedly.
- */
+//Libraries
 #include <Arduino.h>
 #include <Enes100.h>
 
@@ -29,10 +24,16 @@ const int ULTRASONIC_2_ECHO = A3;
 const int PROPULSION_ACTUATOR_SPEED = A4;
 const int CLAW_SPEED = A5;
 
+//Function Prototypes
+void moveForward(int);
+void moveBackwards(int);
+void moveRight(int);
+void moveLeft(int);
+void turnRight(int);
+void turnLeft(int);
 
-void setup()
-{
-  //Initializing pins
+void setup(){
+  //Initializing Pins
   Enes100.begin("Grow Getters", SEED, 3, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(WIFI_TRANSFER, OUTPUT);
   pinMode(WIFI_RECIEVING, INPUT);
@@ -56,17 +57,24 @@ void setup()
   pinMode(CLAW_SPEED, OUTPUT);
 }
 
-void loop()
-{
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);
+void loop(){
+}
 
-  // wait for a second
-  delay(1000);
+//Functions
+void moveForward(int dist){
+}
 
-  // turn the LED off by making the voltage LOW
-  digitalWrite(LED_BUILTIN, LOW);
+void moveBackwards(int dist){
+}
 
-   // wait for a second
-  delay(1000);
+void moveRight(int dist){
+}
+
+void moveLeft(int dist){
+}
+
+void TurnRight(int dist){
+}
+
+void turnLeft(int dist){
 }
