@@ -13,15 +13,16 @@ const int BACK_MOTOR_R_F = 6;
 const int BACK_MOTOR_R_B = 7;
 const int BACK_MOTOR_L_F = 8;
 const int BACK_MOTOR_L_B = 9;
-const int MISSION_MOTOR_F = 10;
-const int MISSION_ACTUATOR_F = 11;
+const int MISSION_MOTOR_F = A4;
+const int MISSION_ACTUATOR_F = A5;
 const int MISSION_MOTOR_B = 12;
 const int MISSION_ACTUATOR_B = 13;
 const int ULTRASONIC_1_TRIG = A0;
 const int ULTRASONIC_1_ECHO = A1;
 const int ULTRASONIC_2_TRIG = A2;
 const int ULTRASONIC_2_ECHO = A3;
-const int CLAW_SPEED = 11;
+const int CLAW_SPEED = 10;
+const int SPEED = 11;
 
 //Global Constants
 const int MS5 = 2;
