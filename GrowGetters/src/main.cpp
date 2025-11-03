@@ -34,12 +34,16 @@ void moveRight(float);
 void moveLeft(float);
 void turnRight(float);
 void turnLeft(float);
+void linearActuator();
+void claw();
 float readUltrasonic1();
 float readUltrasonic2();
+
 void ms5(int);
 void ms5Sub23();
 void ms5Sub458();
 void ms5Sub6();
+void ms5Sub10();
 
 void setup(){
   //Initializing Pins
@@ -67,6 +71,7 @@ void setup(){
 
 void loop(){
   ms5(MS5);
+  exit(0);
 }
 
 //Functions
@@ -82,10 +87,16 @@ void moveRight(float dist){
 void moveLeft(float dist){
 }
 
-void TurnRight(float dist){
+void turnRight(float dist){
 }
 
 void turnLeft(float dist){
+}
+
+void linearActuator(){
+}
+
+void claw(){
 }
 
 float readUltrasonic1(){
@@ -125,6 +136,9 @@ void ms5(int subTask){
       break;
     case(6):
       ms5Sub6();
+      break;
+    case(10):
+      ms5Sub10();
       break;
     default:
       Enes100.print("Wrong number, dumbass.");
@@ -177,4 +191,14 @@ void ms5Sub6(){
   else
     turnLeft(-Enes100.getTheta());
   ms5Sub23();
+}
+
+void ms5Sub10(){
+  linearActuator();
+  delay(500);
+  claw();
+  delay(1000);
+  claw();
+  delay(500);
+  linearActuator();
 }
