@@ -46,13 +46,15 @@ void ms5Sub6();
 
 void setup(){
   //Initializing Pins
-  Enes100.begin("Grow Getters", SEED, 3, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+  digitalWrite(LED_BUILTIN, HIGH);
   pinMode(WIFI_TRANSFER, OUTPUT);
   pinMode(WIFI_RECIEVING, INPUT);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
-  pinMode(FRONT_MOTOR_R_B, OUTPUT);
+  pinMode(FRONT_MOTOR_L_B, OUTPUT);
   pinMode(BACK_MOTOR_R_F, OUTPUT);
   pinMode(BACK_MOTOR_R_B, OUTPUT);
   pinMode(BACK_MOTOR_L_F, OUTPUT);
@@ -66,15 +68,20 @@ void setup(){
   pinMode(ULTRASONIC_2_ECHO, INPUT);
   pinMode(ULTRASONIC_2_TRIG, OUTPUT);
   pinMode(CLAW_SPEED, OUTPUT);
+  pinMode(SPEED, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop(){
+  digitalWrite(LED_BUILTIN, LOW);
   analogWrite(SPEED,100);
   digitalWrite(FRONT_MOTOR_R_F, HIGH);
   digitalWrite(FRONT_MOTOR_R_B, LOW);
 
   digitalWrite(BACK_MOTOR_R_F, HIGH);
   digitalWrite(BACK_MOTOR_R_B, LOW);
+
+  digitalWrite(LED_BUILTIN, HIGH);
   delay(1000);
 
   digitalWrite(FRONT_MOTOR_R_F, LOW);
@@ -82,6 +89,7 @@ void loop(){
 
   digitalWrite(BACK_MOTOR_R_F, LOW);
   digitalWrite(BACK_MOTOR_R_B, HIGH);
+  digitalWrite(LED_BUILTIN, LOW);
   delay(1000);
 }
 
