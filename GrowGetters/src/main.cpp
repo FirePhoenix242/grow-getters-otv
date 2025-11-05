@@ -7,10 +7,10 @@ const int WIFI_TRANSFER = 0;
 const int WIFI_RECIEVING = 1;
 const int FRONT_MOTOR_R_F = 2;
 const int FRONT_MOTOR_R_B = 3;
-const int FRONT_MOTOR_L_F = 4;
-const int FRONT_MOTOR_L_B = 5;
-const int BACK_MOTOR_R_F = 6;
-const int BACK_MOTOR_R_B = 7;
+const int BACK_MOTOR_R_F = 4;
+const int BACK_MOTOR_R_B = 5;
+const int FRONT_MOTOR_L_F = 6;
+const int FRONT_MOTOR_L_B = 7;
 const int BACK_MOTOR_L_F = 8;
 const int BACK_MOTOR_L_B = 9;
 const int MISSION_MOTOR_F = A4;
@@ -43,7 +43,6 @@ void ms5(int);
 void ms5Sub23();
 void ms5Sub458();
 void ms5Sub6();
-void ms5Sub10();
 
 void setup(){
   //Initializing Pins
@@ -70,8 +69,20 @@ void setup(){
 }
 
 void loop(){
-  ms5(MS5);
-  exit(0);
+  analogWrite(SPEED,100);
+  digitalWrite(FRONT_MOTOR_R_F, HIGH);
+  digitalWrite(FRONT_MOTOR_R_B, LOW);
+
+  digitalWrite(BACK_MOTOR_R_F, HIGH);
+  digitalWrite(BACK_MOTOR_R_B, LOW);
+  delay(1000);
+
+  digitalWrite(FRONT_MOTOR_R_F, LOW);
+  digitalWrite(FRONT_MOTOR_R_B, HIGH);
+
+  digitalWrite(BACK_MOTOR_R_F, LOW);
+  digitalWrite(BACK_MOTOR_R_B, HIGH);
+  delay(1000);
 }
 
 //Functions
@@ -137,9 +148,6 @@ void ms5(int subTask){
     case(6):
       ms5Sub6();
       break;
-    case(10):
-      ms5Sub10();
-      break;
     default:
       Enes100.print("Wrong number, dumbass.");
       break;
@@ -195,10 +203,6 @@ void ms5Sub6(){
 
 void ms5Sub10(){
   linearActuator();
-  delay(500);
-  claw();
-  delay(1000);
-  claw();
   delay(500);
   linearActuator();
 }
