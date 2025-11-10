@@ -26,6 +26,13 @@ const int SPEED = 11;
 
 //Global Constants
 const int MS5 = 2;
+const float CM_PER_SECOND = 0;
+const float DEGREE_PER_SECOND = 0;
+const float ACTUATOR_TIME = 0;
+const float CLAW_TIME = 0;
+
+const float SECOND_PER_CM = 1/CM_PER_SECOND;
+const float SECOND_PER_DEGREE = 1/DEGREE_PER_SECOND;
 
 //Function Prototypes
 void moveForward(float);
@@ -95,27 +102,113 @@ void loop(){
 
 //Functions
 void moveForward(float dist){
+  float time = (dist * SECOND_PER_CM);
+  digitalWrite(FRONT_MOTOR_L_F, HIGH);
+  digitalWrite(FRONT_MOTOR_R_F, HIGH);
+  digitalWrite(BACK_MOTOR_L_F, HIGH);
+  digitalWrite(BACK_MOTOR_R_F, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_F, LOW);
+  digitalWrite(FRONT_MOTOR_R_F, LOW);
+  digitalWrite(BACK_MOTOR_L_F, LOW);
+  digitalWrite(BACK_MOTOR_R_F, LOW);
 }
 
 void moveBackwards(float dist){
+  float time = (dist * SECOND_PER_CM);
+  digitalWrite(FRONT_MOTOR_L_B, HIGH);
+  digitalWrite(FRONT_MOTOR_R_B, HIGH);
+  digitalWrite(BACK_MOTOR_L_B, HIGH);
+  digitalWrite(BACK_MOTOR_R_B, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_B, LOW);
+  digitalWrite(FRONT_MOTOR_R_B, LOW);
+  digitalWrite(BACK_MOTOR_L_B, LOW);
+  digitalWrite(BACK_MOTOR_R_B, LOW);
 }
 
 void moveRight(float dist){
+  float time = (dist * SECOND_PER_CM);
+  digitalWrite(FRONT_MOTOR_L_F, HIGH);
+  digitalWrite(FRONT_MOTOR_R_B, HIGH);
+  digitalWrite(BACK_MOTOR_L_B, HIGH);
+  digitalWrite(BACK_MOTOR_R_F, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_F, LOW);
+  digitalWrite(FRONT_MOTOR_R_B, LOW);
+  digitalWrite(BACK_MOTOR_L_B, LOW);
+  digitalWrite(BACK_MOTOR_R_F, LOW);
 }
 
 void moveLeft(float dist){
+  float time = (dist * SECOND_PER_CM);
+  digitalWrite(FRONT_MOTOR_L_B, HIGH);
+  digitalWrite(FRONT_MOTOR_R_F, HIGH);
+  digitalWrite(BACK_MOTOR_L_F, HIGH);
+  digitalWrite(BACK_MOTOR_R_B, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_B, LOW);
+  digitalWrite(FRONT_MOTOR_R_F, LOW);
+  digitalWrite(BACK_MOTOR_L_F, LOW);
+  digitalWrite(BACK_MOTOR_R_B, LOW);
 }
 
-void turnRight(float dist){
+void turnRight(float angle){
+  float time = (angle * SECOND_PER_DEGREE);
+  digitalWrite(FRONT_MOTOR_L_F, HIGH);
+  digitalWrite(FRONT_MOTOR_R_B, HIGH);
+  digitalWrite(BACK_MOTOR_L_F, HIGH);
+  digitalWrite(BACK_MOTOR_R_B, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_F, LOW);
+  digitalWrite(FRONT_MOTOR_R_B, LOW);
+  digitalWrite(BACK_MOTOR_L_F, LOW);
+  digitalWrite(BACK_MOTOR_R_B, LOW);
 }
 
-void turnLeft(float dist){
+void turnLeft(float angle){
+  float time = (angle * SECOND_PER_DEGREE);
+  digitalWrite(FRONT_MOTOR_L_B, HIGH);
+  digitalWrite(FRONT_MOTOR_R_F, HIGH);
+  digitalWrite(BACK_MOTOR_L_B, HIGH);
+  digitalWrite(BACK_MOTOR_R_F, HIGH);
+  delay(time);
+  digitalWrite(FRONT_MOTOR_L_B, LOW);
+  digitalWrite(FRONT_MOTOR_R_F, LOW);
+  digitalWrite(BACK_MOTOR_L_B, LOW);
+  digitalWrite(BACK_MOTOR_R_F, LOW);
 }
 
 void linearActuator(){
+  static bool actuatorState;
+  if(actuatorState != 1){
+      digitalWrite(MISSION_ACTUATOR_F, HIGH);
+      delay(ACTUATOR_TIME);
+      digitalWrite(MISSION_ACTUATOR_F, LOW);
+      actuatorState = 1;
+  }
+  else{
+      digitalWrite(MISSION_ACTUATOR_B, HIGH);
+      delay(ACTUATOR_TIME);
+      digitalWrite(MISSION_ACTUATOR_B, LOW);
+      actuatorState = 0;
+  }
 }
 
 void claw(){
+  static bool clawState;
+  if(clawState != 1){
+      digitalWrite(MISSION_MOTOR_F, HIGH);
+      delay(CLAW_TIME);
+      digitalWrite(MISSION_MOTOR_F, LOW);
+      clawState = 1;
+  }
+  else{
+      digitalWrite(MISSION_MOTOR_B, HIGH);
+      delay(CLAW_TIME);
+      digitalWrite(MISSION_MOTOR_B, LOW);
+      clawState = 0;
+  }
 }
 
 float readUltrasonic1(){
