@@ -3,8 +3,8 @@
 #include <Enes100.h>
 
 //Pin Assignments
-const int WIFI_TRANSFER = 0;
-const int WIFI_RECIEVING = 1;
+const int WIFI_TRANSFER = 1;
+const int WIFI_RECIEVING = 0;
 const int FRONT_MOTOR_R_F = 2;
 const int FRONT_MOTOR_R_B = 3;
 const int BACK_MOTOR_R_F = 4;
@@ -26,10 +26,10 @@ const int SPEED = 11;
 
 //Global Constants
 const int MS5 = 2;
-const float CM_PER_SECOND = 0;
-const float DEGREE_PER_SECOND = 0;
-const float ACTUATOR_TIME = 0;
-const float CLAW_TIME = 0;
+const float CM_PER_SECOND = 14.1;
+const float DEGREE_PER_SECOND = 1;
+const float ACTUATOR_TIME = 1;  
+const float CLAW_TIME = 1;
 
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
 const float SECOND_PER_DEGREE = 1/DEGREE_PER_SECOND;
@@ -80,29 +80,17 @@ void setup(){
 }
 
 void loop(){
+  delay(1000);
   digitalWrite(LED_BUILTIN, LOW);
-  analogWrite(SPEED,100);
-  digitalWrite(FRONT_MOTOR_R_F, HIGH);
-  digitalWrite(FRONT_MOTOR_R_B, LOW);
-
-  digitalWrite(BACK_MOTOR_R_F, HIGH);
-  digitalWrite(BACK_MOTOR_R_B, LOW);
-
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-
-  digitalWrite(FRONT_MOTOR_R_F, LOW);
-  digitalWrite(FRONT_MOTOR_R_B, HIGH);
-
-  digitalWrite(BACK_MOTOR_R_F, LOW);
-  digitalWrite(BACK_MOTOR_R_B, HIGH);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
+  moveRight(100);
+  moveLeft(100);
+  exit(0);
 }
 
 //Functions
 void moveForward(float dist){
-  float time = (dist * SECOND_PER_CM);
+  float time = (dist * SECOND_PER_CM * 1000);
   digitalWrite(FRONT_MOTOR_L_F, HIGH);
   digitalWrite(FRONT_MOTOR_R_F, HIGH);
   digitalWrite(BACK_MOTOR_L_F, HIGH);
@@ -115,7 +103,7 @@ void moveForward(float dist){
 }
 
 void moveBackwards(float dist){
-  float time = (dist * SECOND_PER_CM);
+  float time = (dist * SECOND_PER_CM * 1000);
   digitalWrite(FRONT_MOTOR_L_B, HIGH);
   digitalWrite(FRONT_MOTOR_R_B, HIGH);
   digitalWrite(BACK_MOTOR_L_B, HIGH);
@@ -128,7 +116,7 @@ void moveBackwards(float dist){
 }
 
 void moveRight(float dist){
-  float time = (dist * SECOND_PER_CM);
+  float time = (dist * SECOND_PER_CM * 1000);
   digitalWrite(FRONT_MOTOR_L_F, HIGH);
   digitalWrite(FRONT_MOTOR_R_B, HIGH);
   digitalWrite(BACK_MOTOR_L_B, HIGH);
@@ -141,7 +129,7 @@ void moveRight(float dist){
 }
 
 void moveLeft(float dist){
-  float time = (dist * SECOND_PER_CM);
+  float time = (dist * SECOND_PER_CM * 1000);
   digitalWrite(FRONT_MOTOR_L_B, HIGH);
   digitalWrite(FRONT_MOTOR_R_F, HIGH);
   digitalWrite(BACK_MOTOR_L_F, HIGH);
@@ -154,7 +142,7 @@ void moveLeft(float dist){
 }
 
 void turnRight(float angle){
-  float time = (angle * SECOND_PER_DEGREE);
+  float time = (angle * SECOND_PER_DEGREE * 1000);
   digitalWrite(FRONT_MOTOR_L_F, HIGH);
   digitalWrite(FRONT_MOTOR_R_B, HIGH);
   digitalWrite(BACK_MOTOR_L_F, HIGH);
@@ -167,7 +155,7 @@ void turnRight(float angle){
 }
 
 void turnLeft(float angle){
-  float time = (angle * SECOND_PER_DEGREE);
+  float time = (angle * SECOND_PER_DEGREE * 1000);
   digitalWrite(FRONT_MOTOR_L_B, HIGH);
   digitalWrite(FRONT_MOTOR_R_F, HIGH);
   digitalWrite(BACK_MOTOR_L_B, HIGH);
