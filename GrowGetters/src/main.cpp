@@ -24,7 +24,7 @@ const int ULTRASONIC_2_ECHO = A3;
 const int CLAW_SPEED = 10;
 const int SPEED = 11;
 
-//Global Constants
+// Global Constants
 const int MS5 = 2;
 const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 1;
@@ -34,7 +34,7 @@ const float CLAW_TIME = 1;
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
 const float SECOND_PER_DEGREE = 1/DEGREE_PER_SECOND;
 
-//Function Prototypes
+// Function Prototypes
 void moveForward(float);
 void moveBackwards(float);
 void moveRight(float);
@@ -53,9 +53,6 @@ void ms5Sub6();
 
 void setup(){
   //Initializing Pins
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-  digitalWrite(LED_BUILTIN, HIGH);
   pinMode(WIFI_TRANSFER, OUTPUT);
   pinMode(WIFI_RECIEVING, INPUT);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
@@ -80,12 +77,10 @@ void setup(){
 }
 
 void loop(){
+  digitalWrite(LED_BUILTIN, HIGH);
   delay(1000);
   digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(LED_BUILTIN, HIGH);
-  moveRight(100);
-  moveLeft(100);
-  exit(0);
+  delay(1000);
 }
 
 //Functions
