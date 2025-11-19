@@ -199,7 +199,7 @@ float readUltrasonic1(){
  
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_1_ECHO, HIGH);
-  return (duration / 23);
+  return (duration / 27);
 }
 
 float readUltrasonic2(){
@@ -211,7 +211,7 @@ float readUltrasonic2(){
  
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_2_ECHO, HIGH);
-  return (duration / 29.1);
+  return (duration / 26.5);
 }
 
 void ms5(int subTask){
