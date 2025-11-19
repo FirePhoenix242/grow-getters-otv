@@ -9,10 +9,10 @@ const int FRONT_MOTOR_R_F = 2;
 const int FRONT_MOTOR_R_B = 3;
 const int BACK_MOTOR_R_F = 4;
 const int BACK_MOTOR_R_B = 5;
-const int FRONT_MOTOR_L_F = 6;
-const int FRONT_MOTOR_L_B = 7;
-const int BACK_MOTOR_L_F = 8;
-const int BACK_MOTOR_L_B = 9;
+const int FRONT_MOTOR_L_F = 7;
+const int FRONT_MOTOR_L_B = 6;
+const int BACK_MOTOR_L_F = 9;
+const int BACK_MOTOR_L_B = 8;
 const int MISSION_MOTOR_F = A4;
 const int MISSION_ACTUATOR_F = A5;
 const int MISSION_MOTOR_B = 12;
@@ -24,8 +24,8 @@ const int ULTRASONIC_2_ECHO = A3;
 const int CLAW_SPEED = 10;
 const int SPEED = 11;
 
-// Global Constants
-const int MS5 = 2;
+// // Global Constants
+const int MS5 = 4;
 const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 1;
 const float ACTUATOR_TIME = 1;  
@@ -53,8 +53,7 @@ void ms5Sub6();
 
 void setup(){
   //Initializing Pins
-  pinMode(WIFI_TRANSFER, OUTPUT);
-  pinMode(WIFI_RECIEVING, INPUT);
+  Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -77,10 +76,7 @@ void setup(){
 }
 
 void loop(){
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
+  ms5(5);
 }
 
 //Functions
@@ -203,7 +199,7 @@ float readUltrasonic1(){
  
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_1_ECHO, HIGH);
-  return (duration / 29.1);
+  return (duration / 23);
 }
 
 float readUltrasonic2(){
@@ -255,18 +251,12 @@ void ms5Sub23(){
 void ms5Sub458(){
   switch(Enes100.isVisible()){
     case(true):
-      Enes100.println("Current X value is: ");
-      Enes100.print(Enes100.getX());
-      Enes100.println("Current Y value is: ");
-      Enes100.print(Enes100.getY());
-      Enes100.println("Current heading value is: ");
-      Enes100.print(Enes100.getTheta());
-      Enes100.println("Ultrasonic 1 is reading: ");
-      Enes100.print(readUltrasonic1());
-      Enes100.print("cm");
-      Enes100.println("Ultrasonic 2 is reading: ");
-      Enes100.print(readUltrasonic2());
-      Enes100.print("cm");
+      Enes100.print("Current X value is: ");
+      Enes100.println(Enes100.getX());
+      Enes100.print("Current Y value is: ");
+      Enes100.println(Enes100.getY());
+      Enes100.print("Current heading value is: ");
+      Enes100.println(Enes100.getTheta() * (180/PI));
       delay(500);
       break;
     default:
