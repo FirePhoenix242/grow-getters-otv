@@ -27,8 +27,8 @@ const int SPEED = 11;
 // // Global Constants
 const int MS5 = 4;
 const float CM_PER_SECOND = 14.1;
-const float DEGREE_PER_SECOND = 1;
-const float ACTUATOR_TIME = 1;  
+const float DEGREE_PER_SECOND = 41;
+const float ACTUATOR_TIME = 20;  
 const float CLAW_TIME = 1;
 
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
@@ -39,6 +39,7 @@ void moveForward(float);
 void moveBackwards(float);
 void moveRight(float);
 void moveLeft(float);
+void turnTo(float);
 void turnRight(float);
 void turnLeft(float);
 void linearActuator();
@@ -76,7 +77,9 @@ void setup(){
 }
 
 void loop(){
-  ms5(5);
+  delay(1000);
+  ms5(6);
+  exit(0);
 }
 
 //Functions
@@ -158,17 +161,27 @@ void turnLeft(float angle){
   digitalWrite(BACK_MOTOR_R_F, LOW);
 }
 
+void turnTo(float goal){
+  float difference = (goal - (Enes100.getTheta() * 180/PI));
+  if(difference > 0){
+    turnLeft(difference);
+  }
+  else if(difference < 0){
+    turnRight(-difference);
+  }
+}
+
 void linearActuator(){
   static bool actuatorState;
   if(actuatorState != 1){
       digitalWrite(MISSION_ACTUATOR_F, HIGH);
-      delay(ACTUATOR_TIME);
+      delay(ACTUATOR_TIME * 1000);
       digitalWrite(MISSION_ACTUATOR_F, LOW);
       actuatorState = 1;
   }
   else{
       digitalWrite(MISSION_ACTUATOR_B, HIGH);
-      delay(ACTUATOR_TIME);
+      delay(ACTUATOR_TIME * 1000);
       digitalWrite(MISSION_ACTUATOR_B, LOW);
       actuatorState = 0;
   }
@@ -178,13 +191,13 @@ void claw(){
   static bool clawState;
   if(clawState != 1){
       digitalWrite(MISSION_MOTOR_F, HIGH);
-      delay(CLAW_TIME);
+      delay(CLAW_TIME * 1000);
       digitalWrite(MISSION_MOTOR_F, LOW);
       clawState = 1;
   }
   else{
       digitalWrite(MISSION_MOTOR_B, HIGH);
-      delay(CLAW_TIME);
+      delay(CLAW_TIME * 1000);
       digitalWrite(MISSION_MOTOR_B, LOW);
       clawState = 0;
   }
@@ -258,6 +271,7 @@ void ms5Sub458(){
       Enes100.print("Current heading value is: ");
       Enes100.println(Enes100.getTheta() * (180/PI));
       delay(500);
+      Enes100.mission(LOCATION, 'A');
       break;
     default:
       Enes100.println("Aruco Marker is not visible.");
@@ -268,11 +282,23 @@ void ms5Sub458(){
 }
 
 void ms5Sub6(){
-  if(Enes100.getTheta() >= 0)
-    turnRight(Enes100.getTheta());
+  bool startPos;
+  if(Enes100.getY() >= 1)
+    startPos = 0;
   else
-    turnLeft(-Enes100.getTheta());
-  ms5Sub23();
+    startPos = 1;
+
+  if(startPos == 0){
+    turnTo(-90);
+  }
+  else{
+    turnTo(90);
+  }
+
+  delay(500);
+  moveForward(100);
+  turnTo(0);
+  moveForward(340);
 }
 
 void ms5Sub10(){
