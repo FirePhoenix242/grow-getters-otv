@@ -49,6 +49,7 @@ float readUltrasonic2();
 void setup(){
   //Initializing Pins
   Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
+  Enes100.println("Connected...");
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -58,9 +59,9 @@ void setup(){
   pinMode(BACK_MOTOR_L_F, OUTPUT);
   pinMode(BACK_MOTOR_L_B, OUTPUT);
   pinMode(MISSION_MOTOR_F, OUTPUT);
-  pinMode(MISSION_MOTOR_B, OUTPUT);
+  // pinMode(MISSION_MOTOR_B, OUTPUT);
   pinMode(MISSION_ACTUATOR_F, OUTPUT);
-  pinMode(MISSION_ACTUATOR_B, OUTPUT);
+  // pinMode(MISSION_ACTUATOR_B, OUTPUT);
   pinMode(ULTRASONIC_1_ECHO, INPUT);
   pinMode(ULTRASONIC_1_TRIG, OUTPUT);
   pinMode(ULTRASONIC_2_ECHO, INPUT);
@@ -69,16 +70,14 @@ void setup(){
   pinMode(SPEED, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
 }
-
-void loop(){
-  //Reset Mission Actuator
+bool sent = false;
+void loop() {
+  // Reset Mission Actuator
   digitalWrite(MISSION_ACTUATOR_B, HIGH);
   delay(5000);
 
   //Get to mission site
-  bool startPos;
-  if(Enes100.getY >= 1){
-    startPos = 0;
+  if(Enes100.getY() >= 1){
     turnTo(-90);
     delay(500);
     moveForward(100);
@@ -86,7 +85,6 @@ void loop(){
     turnTo(-90);
   }
   else{
-    startPos = 1;
     turnTo(90);
     delay(500);
     moveForward(100);
@@ -95,27 +93,47 @@ void loop(){
   }
   moveRight(10);
   delay(500);
+  exit(0);
 
-  //Navigation
+  //Obstacle Navigation
   moveBackwards(50);
   delay(500);
   turnTo(0);
   delay(500);
   moveForward(50);
   delay(500);
+  for(int n = 0; n < 2; n++){
+    moveLeft(100);
+    delay(500);
+    do{
+      digitalWrite(FRONT_MOTOR_L_F, HIGH);
+      digitalWrite(FRONT_MOTOR_R_B, HIGH);
+      digitalWrite(BACK_MOTOR_L_B, HIGH);
+      digitalWrite(BACK_MOTOR_R_F, HIGH);
+    }while(readUltrasonic1() <= 5 && readUltrasonic2() <= 5);
+    digitalWrite(FRONT_MOTOR_L_F, LOW);
+    digitalWrite(FRONT_MOTOR_R_B, LOW);
+    digitalWrite(BACK_MOTOR_L_B, LOW);
+    digitalWrite(BACK_MOTOR_R_F, LOW);
+    delay(500);
+    moveForward(100);
+    delay(500);
+  }
+
+  //Final Navigation
   moveLeft(100);
   delay(500);
-  do{
-    digitalWrite(FRONT_MOTOR_L_F, HIGH);
-    digitalWrite(FRONT_MOTOR_R_B, HIGH);
-    digitalWrite(BACK_MOTOR_L_B, HIGH);
-    digitalWrite(BACK_MOTOR_R_F, HIGH);
-  }while(readUltrasonic1() > 5 && readUltrasonic2() > 5);
-  digitalWrite(FRONT_MOTOR_L_F, LOW);
-  digitalWrite(FRONT_MOTOR_R_B, LOW);
-  digitalWrite(BACK_MOTOR_L_B, LOW);
-  digitalWrite(BACK_MOTOR_R_F, LOW);
-  delay(500);
+  moveRight(30);
+  turnTo(0);
+  moveForward(100);
+
+  //Victory Dance
+  while(1 == 1){
+    linearActuator();
+    delay(100);
+  }
+
+  exit(0);
 }
 
 //Functions
