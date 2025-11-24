@@ -25,10 +25,9 @@ const int CLAW_SPEED = 10;
 const int SPEED = 11;
 
 // // Global Constants
-const int MS5 = 4;
 const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 41;
-const float ACTUATOR_TIME = 20;  
+const float ACTUATOR_TIME = 5;  
 const float CLAW_TIME = 1;
 
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
@@ -46,11 +45,6 @@ void linearActuator();
 void claw();
 float readUltrasonic1();
 float readUltrasonic2();
-
-void ms5(int);
-void ms5Sub23();
-void ms5Sub458();
-void ms5Sub6();
 
 void setup(){
   //Initializing Pins
@@ -77,9 +71,51 @@ void setup(){
 }
 
 void loop(){
-  delay(1000);
-  ms5(6);
-  exit(0);
+  //Reset Mission Actuator
+  digitalWrite(MISSION_ACTUATOR_B, HIGH);
+  delay(5000);
+
+  //Get to mission site
+  bool startPos;
+  if(Enes100.getY >= 1){
+    startPos = 0;
+    turnTo(-90);
+    delay(500);
+    moveForward(100);
+    delay(500);
+    turnTo(-90);
+  }
+  else{
+    startPos = 1;
+    turnTo(90);
+    delay(500);
+    moveForward(100);
+    delay(500);
+    turnTo(90);
+  }
+  moveRight(10);
+  delay(500);
+
+  //Navigation
+  moveBackwards(50);
+  delay(500);
+  turnTo(0);
+  delay(500);
+  moveForward(50);
+  delay(500);
+  moveLeft(100);
+  delay(500);
+  do{
+    digitalWrite(FRONT_MOTOR_L_F, HIGH);
+    digitalWrite(FRONT_MOTOR_R_B, HIGH);
+    digitalWrite(BACK_MOTOR_L_B, HIGH);
+    digitalWrite(BACK_MOTOR_R_F, HIGH);
+  }while(readUltrasonic1() > 5 && readUltrasonic2() > 5);
+  digitalWrite(FRONT_MOTOR_L_F, LOW);
+  digitalWrite(FRONT_MOTOR_R_B, LOW);
+  digitalWrite(BACK_MOTOR_L_B, LOW);
+  digitalWrite(BACK_MOTOR_R_F, LOW);
+  delay(500);
 }
 
 //Functions
@@ -225,84 +261,4 @@ float readUltrasonic2(){
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_2_ECHO, HIGH);
   return (duration / 26.5);
-}
-
-void ms5(int subTask){
-  switch(subTask){
-    case(2):
-    case(3):
-      ms5Sub23();
-      break;
-    case(4):
-    case(5):
-    case(8):
-      ms5Sub458();
-      break;
-    case(6):
-      ms5Sub6();
-      break;
-    default:
-      Enes100.print("Wrong number, dumbass.");
-      break;
-  }
-}
-
-void ms5Sub23(){
-  moveForward(350);
-  delay(10000);
-
-  for(int n = 0; n < 3; n++){
-    turnRight(90);
-    delay(1000);
-  }
-  for(int n = 0; n < 3; n++){
-    turnLeft(90);
-    delay(1000);
-  }
-}
-
-void ms5Sub458(){
-  switch(Enes100.isVisible()){
-    case(true):
-      Enes100.print("Current X value is: ");
-      Enes100.println(Enes100.getX());
-      Enes100.print("Current Y value is: ");
-      Enes100.println(Enes100.getY());
-      Enes100.print("Current heading value is: ");
-      Enes100.println(Enes100.getTheta() * (180/PI));
-      delay(500);
-      Enes100.mission(LOCATION, 'A');
-      break;
-    default:
-      Enes100.println("Aruco Marker is not visible.");
-      delay(1000);
-      break;
-  }
-
-}
-
-void ms5Sub6(){
-  bool startPos;
-  if(Enes100.getY() >= 1)
-    startPos = 0;
-  else
-    startPos = 1;
-
-  if(startPos == 0){
-    turnTo(-90);
-  }
-  else{
-    turnTo(90);
-  }
-
-  delay(500);
-  moveForward(100);
-  turnTo(0);
-  moveForward(340);
-}
-
-void ms5Sub10(){
-  linearActuator();
-  delay(500);
-  linearActuator();
 }
