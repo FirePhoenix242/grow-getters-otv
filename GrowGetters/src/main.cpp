@@ -45,11 +45,11 @@ void linearActuator();
 void claw();
 float readUltrasonic1();
 float readUltrasonic2();
+float getDegrees();
 
 void setup(){
   //Initializing Pins
-  Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
-  Enes100.println("Connected...");
+  // Enes100.begin("Grow Getters", SEED, 328, 1215, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -59,9 +59,9 @@ void setup(){
   pinMode(BACK_MOTOR_L_F, OUTPUT);
   pinMode(BACK_MOTOR_L_B, OUTPUT);
   pinMode(MISSION_MOTOR_F, OUTPUT);
-  // pinMode(MISSION_MOTOR_B, OUTPUT);
+  pinMode(MISSION_MOTOR_B, OUTPUT);
   pinMode(MISSION_ACTUATOR_F, OUTPUT);
-  // pinMode(MISSION_ACTUATOR_B, OUTPUT);
+  pinMode(MISSION_ACTUATOR_B, OUTPUT);
   pinMode(ULTRASONIC_1_ECHO, INPUT);
   pinMode(ULTRASONIC_1_TRIG, OUTPUT);
   pinMode(ULTRASONIC_2_ECHO, INPUT);
@@ -73,26 +73,31 @@ void setup(){
 bool sent = false;
 void loop() {
   // Reset Mission Actuator
-  digitalWrite(MISSION_ACTUATOR_B, HIGH);
-  delay(5000);
+  // digitalWrite(MISSION_ACTUATOR_B, HIGH);
+  // delay(5000);
 
-  //Get to mission site
-  if(Enes100.getY() >= 1){
-    turnTo(-90);
-    delay(500);
-    moveForward(100);
-    delay(500);
-    turnTo(-90);
-  }
-  else{
-    turnTo(90);
-    delay(500);
-    moveForward(100);
-    delay(500);
-    turnTo(90);
-  }
+  // // Get to mission site
+  // if(Enes100.getY() >= 1){
+  //   turnTo(-90);
+  //   delay(500);
+  //   moveForward(100);
+  //   delay(500);
+  //   if(!(getDegrees() < -85 && getDegrees() > -95))
+  //     turnTo(-90);
+  // }
+  // else{
+  //   turnTo(90);
+  //   delay(500);
+  //   moveForward(100);
+  //   delay(500);
+  //   if(!(getDegrees() < 95 && getDegrees() > 85))
+  //     turnTo(90);
+  // }
+  moveForward(100);
+  delay(500);
   moveRight(10);
   delay(500);
+  moveForward(10);
   exit(0);
 
   //Obstacle Navigation
@@ -216,7 +221,7 @@ void turnLeft(float angle){
 }
 
 void turnTo(float goal){
-  float difference = (goal - (Enes100.getTheta() * 180/PI));
+  float difference = (goal - getDegrees());
   if(difference > 0){
     turnLeft(difference);
   }
@@ -279,4 +284,8 @@ float readUltrasonic2(){
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_2_ECHO, HIGH);
   return (duration / 26.5);
+}
+
+float getDegrees(){
+  return(Enes100.getTheta() * 180/PI);
 }
