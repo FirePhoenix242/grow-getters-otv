@@ -27,11 +27,12 @@ const int SPEED = 11;
 // // Global Constants
 const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 41;
-const float ACTUATOR_TIME = 5;  
+const float ACTUATOR_TIME = 3;  
 const float CLAW_TIME = 1;
 
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
 const float SECOND_PER_DEGREE = 1/DEGREE_PER_SECOND;
+bool actuatorState = 0;
 
 // Function Prototypes
 void moveForward(float);
@@ -48,8 +49,8 @@ float readUltrasonic2();
 float getDegrees();
 
 void setup(){
-  //Initializing Pins
-  // Enes100.begin("Grow Getters", SEED, 328, 1215, WIFI_TRANSFER, WIFI_RECIEVING);
+  // Initializing Pins
+  Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -68,37 +69,41 @@ void setup(){
   pinMode(ULTRASONIC_2_TRIG, OUTPUT);
   pinMode(CLAW_SPEED, OUTPUT);
   pinMode(SPEED, OUTPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
 }
-bool sent = false;
-void loop() {
-  // Reset Mission Actuator
-  // digitalWrite(MISSION_ACTUATOR_B, HIGH);
-  // delay(5000);
 
-  // // Get to mission site
-  // if(Enes100.getY() >= 1){
-  //   turnTo(-90);
-  //   delay(500);
-  //   moveForward(100);
-  //   delay(500);
-  //   if(!(getDegrees() < -85 && getDegrees() > -95))
-  //     turnTo(-90);
-  // }
-  // else{
-  //   turnTo(90);
-  //   delay(500);
-  //   moveForward(100);
-  //   delay(500);
-  //   if(!(getDegrees() < 95 && getDegrees() > 85))
-  //     turnTo(90);
-  // }
-  moveForward(100);
+void loop() {
+  while(1 == 1){
+    Enes100.println(readUltrasonic1);
+    Enes100.println(readUltrasonic2);
+    delay(1000);
+  }
+
+  //Reset Mission Actuator
+  digitalWrite(MISSION_ACTUATOR_B, HIGH);
+  delay(3000);
+  digitalWrite(MISSION_ACTUATOR_B, LOW);
   delay(500);
-  moveRight(10);
-  delay(500);
-  moveForward(10);
-  exit(0);
+
+  //Get to mission site
+  if(Enes100.getY() >= 1){
+    turnTo(-90);
+    delay(500);
+    moveForward(100);
+    delay(500);
+    moveRight(10);
+    delay(500);
+    moveForward(10);
+  }
+  else{
+    turnTo(90);
+    delay(500);
+    moveForward(100);
+    delay(500);
+    moveRight(10);
+    delay(500);
+    moveForward(10);
+  }
+  delay(1000);
 
   //Obstacle Navigation
   moveBackwards(50);
@@ -107,9 +112,11 @@ void loop() {
   delay(500);
   moveForward(50);
   delay(500);
+
   for(int n = 0; n < 2; n++){
     moveLeft(100);
     delay(500);
+    exit(0);
     do{
       digitalWrite(FRONT_MOTOR_L_F, HIGH);
       digitalWrite(FRONT_MOTOR_R_B, HIGH);
@@ -134,8 +141,11 @@ void loop() {
 
   //Victory Dance
   while(1 == 1){
+    digitalWrite(FRONT_MOTOR_L_F, HIGH);
+    digitalWrite(FRONT_MOTOR_R_B, HIGH);
+    digitalWrite(BACK_MOTOR_L_F, HIGH);
+    digitalWrite(BACK_MOTOR_R_B, HIGH);
     linearActuator();
-    delay(100);
   }
 
   exit(0);
@@ -231,7 +241,6 @@ void turnTo(float goal){
 }
 
 void linearActuator(){
-  static bool actuatorState;
   if(actuatorState != 1){
       digitalWrite(MISSION_ACTUATOR_F, HIGH);
       delay(ACTUATOR_TIME * 1000);
