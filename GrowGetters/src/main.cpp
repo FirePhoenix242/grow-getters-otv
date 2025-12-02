@@ -50,7 +50,7 @@ float getDegrees();
 
 void setup(){
   // Initializing Pins
-  Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
+  Enes100.begin("Grow Getters", SEED, 328, 1201, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -73,8 +73,8 @@ void setup(){
 
 void loop() {
   while(1 == 1){
-    Enes100.println(readUltrasonic1);
-    Enes100.println(readUltrasonic2);
+    Enes100.println(readUltrasonic1());
+    Enes100.println(readUltrasonic2());
     delay(1000);
   }
 
@@ -280,7 +280,7 @@ float readUltrasonic1(){
  
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_1_ECHO, HIGH);
-  return (duration / 27);
+  return (duration / 54.216);
 }
 
 float readUltrasonic2(){
@@ -292,7 +292,7 @@ float readUltrasonic2(){
  
   // Read the signal from the sensor
   float duration = pulseIn(ULTRASONIC_2_ECHO, HIGH);
-  return (duration / 26.5);
+  return (duration / 33.6);
 }
 
 float getDegrees(){
