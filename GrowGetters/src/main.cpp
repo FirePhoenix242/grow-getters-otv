@@ -50,7 +50,7 @@ float getDegrees();
 
 void setup(){
   // Initializing Pins
-  Enes100.begin("Grow Getters", SEED, 328, 1201, WIFI_TRANSFER, WIFI_RECIEVING);
+  Enes100.begin("Grow Getters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -72,12 +72,6 @@ void setup(){
 }
 
 void loop() {
-  while(1 == 1){
-    Enes100.println(readUltrasonic1());
-    Enes100.println(readUltrasonic2());
-    delay(1000);
-  }
-
   //Reset Mission Actuator
   digitalWrite(MISSION_ACTUATOR_B, HIGH);
   delay(3000);
@@ -85,30 +79,31 @@ void loop() {
   delay(500);
 
   //Get to mission site
-  if(Enes100.getY() >= 1){
-    turnTo(-90);
-    delay(500);
-    moveForward(100);
-    delay(500);
-    moveRight(10);
-    delay(500);
-    moveForward(10);
-  }
-  else{
-    turnTo(90);
-    delay(500);
-    moveForward(100);
-    delay(500);
-    moveRight(10);
-    delay(500);
-    moveForward(10);
-  }
-  delay(1000);
+  // if(Enes100.getY() >= 1){
+  //   turnTo(-90);
+  //   delay(500);
+  //   moveForward(100);
+  //   delay(500);
+  //   moveRight(10);
+  //   delay(500);
+  //   moveForward(10);
+  // }
+  // else{
+  //   turnTo(90);
+  //   delay(500);
+  //   moveForward(100);
+  //   delay(500);
+  //   moveRight(10);
+  //   delay(500);
+  //   moveForward(10);
+  // }
+  // delay(1000);
 
   //Obstacle Navigation
   moveBackwards(50);
   delay(500);
-  turnTo(0);
+  // turnTo(0);
+    turnRight(90);
   delay(500);
   moveForward(50);
   delay(500);
@@ -116,20 +111,23 @@ void loop() {
   for(int n = 0; n < 2; n++){
     moveLeft(100);
     delay(500);
-    exit(0);
-    do{
+    moveRight(20);
+    delay(500);
+    while(readUltrasonic1() <= 100 && readUltrasonic2() <= 100){
       digitalWrite(FRONT_MOTOR_L_F, HIGH);
       digitalWrite(FRONT_MOTOR_R_B, HIGH);
       digitalWrite(BACK_MOTOR_L_B, HIGH);
       digitalWrite(BACK_MOTOR_R_F, HIGH);
-    }while(readUltrasonic1() <= 5 && readUltrasonic2() <= 5);
+    }
     digitalWrite(FRONT_MOTOR_L_F, LOW);
     digitalWrite(FRONT_MOTOR_R_B, LOW);
     digitalWrite(BACK_MOTOR_L_B, LOW);
     digitalWrite(BACK_MOTOR_R_F, LOW);
+    moveRight(25);
     delay(500);
-    moveForward(100);
+    moveForward(65);
     delay(500);
+    exit(0);
   }
 
   //Final Navigation
