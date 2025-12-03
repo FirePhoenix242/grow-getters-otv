@@ -88,12 +88,25 @@ void loop() {
   //Get to mission site
   if(Enes100.getY() >= 1){
     turnTo(-90);
+    for(int n = 0; n < 10; n++){
+      moveForward(10);
+      if(getDegrees() > -85 || getDegrees() < -95){
+        delay(500);
+        turnTo(-90);
+      }
+    }
   }
   else{
     turnTo(90);
+    delay(500);
+    for(int n = 0; n < 10; n++){
+      moveForward(10);
+      if(getDegrees() > 95 || getDegrees() < 85){
+        delay(500);
+        turnTo(90);
+      }
+    }
   }
-  delay(500);
-  moveForward(100);
   delay(500);
   moveRight(10);
   delay(500);
