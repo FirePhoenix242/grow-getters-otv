@@ -57,7 +57,7 @@ float getDegrees();
 
 void setup(){
   // Initializing Pins
-  Enes100.begin("Grow Getter", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
+  Enes100.begin("GrowGetters", SEED, 328, 1120, WIFI_TRANSFER, WIFI_RECIEVING);
   pinMode(FRONT_MOTOR_R_F, OUTPUT);
   pinMode(FRONT_MOTOR_R_B, OUTPUT);
   pinMode(FRONT_MOTOR_L_F, OUTPUT);
@@ -84,6 +84,21 @@ void loop() {
   delay(3000);
   digitalWrite(MISSION_ACTUATOR_B, LOW);
   delay(500);
+
+   //Mission Code
+  while(1 == 1){
+    Enes100.println(Enes100.MLGetPrediction(2));
+    if(Enes100.MLGetPrediction(2) == 0){
+      Enes100.println("Rocks");
+    }
+    else if(Enes100.MLGetPrediction(2) == 1){
+      Enes100.println("Orzo");
+    }
+    else{
+      Enes100.println(Enes100.MLGetPrediction(2));
+    }
+    delay(1000);
+  }
 
   //Get to mission site
   if(Enes100.getY() >= 1){
