@@ -120,22 +120,22 @@ void loop() {
   //Mission Code
   char orzoPlot = 'A';
   bool plotFound = 0;
-  moveBackwards(3.5);
+  moveBackwards(4);
   delay(500);
   moveLeft(7);
   int n = 0;
   do{
     delay(500);
-    if(Enes100.MLGetPrediction(2) == 1){
+    if(Enes100.MLGetPrediction(2) == 0){
+      orzoPlot++;
+    }
+    else
       Enes100.print("The Orzo is in plot ");
       Enes100.println(orzoPlot);
-      moveForward(3.5);
+      moveForward(4);
       delay(500);
       claw();
       plotFound = 1;
-    }
-    else
-      orzoPlot++;
     n++;
     switch(n){
       case(1):
