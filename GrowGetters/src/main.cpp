@@ -14,9 +14,9 @@ const int FRONT_MOTOR_L_B = 6;
 const int BACK_MOTOR_L_F = 9;
 const int BACK_MOTOR_L_B = 8;
 const int MISSION_MOTOR_F = 11;
-const int MISSION_ACTUATOR_F = A5;
+const int MISSION_ACTUATOR_B = A5;
 const int MISSION_MOTOR_B = 12;
-const int MISSION_ACTUATOR_B = 13;
+const int MISSION_ACTUATOR_F = 13;
 const int ULTRASONIC_1_TRIG = A0;
 const int ULTRASONIC_1_ECHO = A1;
 const int ULTRASONIC_2_TRIG = A2;
@@ -80,6 +80,9 @@ void setup(){
 }
 
 void loop() {
+  //Hold Claw
+  digitalWrite(MISSION_MOTOR_F, HIGH);
+
   //Reset Mission Actuator
   digitalWrite(MISSION_ACTUATOR_B, HIGH);
   delay(3000);
@@ -341,18 +344,10 @@ void linearActuator(){
 }
 
 void claw(){
-  if(clawState != 1){
-      digitalWrite(MISSION_MOTOR_F, HIGH);
-      delay(CLAW_TIME * 1000);
-      digitalWrite(MISSION_MOTOR_F, LOW);
-      clawState = 1;
-  }
-  else{
-      digitalWrite(MISSION_MOTOR_B, HIGH);
-      delay(CLAW_TIME * 1000);
-      digitalWrite(MISSION_MOTOR_B, LOW);
-      clawState = 0;
-  }
+  digitalWrite(MISSION_MOTOR_F, LOW);
+  digitalWrite(MISSION_MOTOR_B, HIGH);
+  delay(CLAW_TIME * 1000);
+  digitalWrite(MISSION_MOTOR_B, LOW);
 }
 
 float readUltrasonic1(){
