@@ -5,10 +5,10 @@
 //Pin Assignments
 const int WIFI_TRANSFER = 1;
 const int WIFI_RECIEVING = 0;
-const int FRONT_MOTOR_R_F = 2;
-const int FRONT_MOTOR_R_B = 3;
-const int BACK_MOTOR_R_F = 4;
-const int BACK_MOTOR_R_B = 5;
+const int FRONT_MOTOR_R_B = 2;
+const int FRONT_MOTOR_R_F = 3;
+const int BACK_MOTOR_R_B = 4;
+const int BACK_MOTOR_R_F = 5;
 const int FRONT_MOTOR_L_F = 7;
 const int FRONT_MOTOR_L_B = 6;
 const int BACK_MOTOR_L_F = 9;
