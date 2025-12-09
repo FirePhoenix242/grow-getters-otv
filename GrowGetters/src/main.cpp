@@ -29,17 +29,18 @@ const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 41;
 const float ACTUATOR_TIME = 3;  
 const float CLAW_TIME = 1;
-const float TOP_WALL = 2.03;
+const float TOP_WALL = 1.95;
 const float OBSCTACLES_1 = 0.95;
 const float OBSCTACLES_2 = 1.85;
 const float BAR_X = 3.27;
-const float BAR_Y = 1.66;
+const float BAR_Y = 1.59;
 const float END_ZONE = 4;
 
 const float SECOND_PER_CM = 1/CM_PER_SECOND;
 const float SECOND_PER_DEGREE = 1/DEGREE_PER_SECOND;
 
 bool actuatorState = 0;
+bool clawState = 0;
 
 // Function Prototypes
 void moveForward(float);
@@ -85,21 +86,6 @@ void loop() {
   digitalWrite(MISSION_ACTUATOR_B, LOW);
   delay(500);
 
-   //Mission Code
-  while(1 == 1){
-    Enes100.println(Enes100.MLGetPrediction(2));
-    if(Enes100.MLGetPrediction(2) == 0){
-      Enes100.println("Rocks");
-    }
-    else if(Enes100.MLGetPrediction(2) == 1){
-      Enes100.println("Orzo");
-    }
-    else{
-      Enes100.println(Enes100.MLGetPrediction(2));
-    }
-    delay(1000);
-  }
-
   //Get to mission site
   if(Enes100.getY() >= 1){
     turnTo(-90);
@@ -123,10 +109,44 @@ void loop() {
     }
   }
   delay(500);
-  moveRight(10);
+  moveRight(20);
   delay(500);
-  moveForward(10);
+  moveForward(20);
   delay(1000);
+
+  //Mission Code
+  char orzoPlot = 'A';
+  bool plotFound = 0;
+  moveBackwards(3.5);
+  delay(500);
+  moveLeft(7);
+  int n = 0;
+  do{
+    delay(500);
+    if(Enes100.MLGetPrediction(2) == 1){
+      Enes100.print("The Orzo is in plot ");
+      Enes100.println(orzoPlot);
+      claw();
+      plotFound = 1;
+    }
+    else
+      orzoPlot++;
+    n++;
+    switch(n){
+      case(1):
+        moveRight(7);
+        break;
+      case(2):
+        moveBackwards(7);
+        delay(500);
+        moveLeft(7);
+        break;
+      case(3):
+        moveRight(7);
+        break;
+    }
+    delay(500);
+  }while(plotFound == 0);
 
   //Obstacle Navigation
   moveBackwards(50);
@@ -319,7 +339,6 @@ void linearActuator(){
 }
 
 void claw(){
-  static bool clawState;
   if(clawState != 1){
       digitalWrite(MISSION_MOTOR_F, HIGH);
       delay(CLAW_TIME * 1000);
