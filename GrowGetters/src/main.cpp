@@ -13,7 +13,7 @@ const int FRONT_MOTOR_L_F = 7;
 const int FRONT_MOTOR_L_B = 6;
 const int BACK_MOTOR_L_F = 9;
 const int BACK_MOTOR_L_B = 8;
-const int MISSION_MOTOR_F = A4;
+const int MISSION_MOTOR_F = 11;
 const int MISSION_ACTUATOR_F = A5;
 const int MISSION_MOTOR_B = 12;
 const int MISSION_ACTUATOR_B = 13;
@@ -28,7 +28,7 @@ const int SPEED = 11;
 const float CM_PER_SECOND = 14.1;
 const float DEGREE_PER_SECOND = 41;
 const float ACTUATOR_TIME = 3;  
-const float CLAW_TIME = 1;
+const float CLAW_TIME = 3;
 const float TOP_WALL = 1.95;
 const float OBSCTACLES_1 = 0.95;
 const float OBSCTACLES_2 = 1.85;
@@ -126,6 +126,8 @@ void loop() {
     if(Enes100.MLGetPrediction(2) == 1){
       Enes100.print("The Orzo is in plot ");
       Enes100.println(orzoPlot);
+      moveForward(3.5);
+      delay(500);
       claw();
       plotFound = 1;
     }
