@@ -129,13 +129,14 @@ void loop() {
     if(Enes100.MLGetPrediction(2) == 0){
       orzoPlot++;
     }
-    else
+    else{
       Enes100.print("The Orzo is in plot ");
       Enes100.println(orzoPlot);
       moveForward(4);
       delay(500);
       claw();
       plotFound = 1;
+    }
     n++;
     switch(n){
       case(1):
